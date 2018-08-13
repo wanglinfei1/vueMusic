@@ -64,17 +64,21 @@
         CgiGetVkey(ids, types).then((res) => {
           if (res.code === ERR_OK) {
             var midurlinfo = res.url_mid.data.midurlinfo
-            this._normalizeSongUrl(list, midurlinfo)
+            var midurlJson = {}
+            midurlinfo.forEach((midurlitem) => {
+              midurlJson[midurlitem.songmid] = midurlitem
+            })
+            this._normalizeSongUrl(list, midurlJson)
           }
         })
         return songList
       },
-      _normalizeSongUrl(list, midurlinfo) {
+      _normalizeSongUrl(list, midurlJson) {
         let songList = []
         for (var i = 0; i < list.length; i++) {
           var listData = list[i].data
-          if (listData.songid && listData.albumid) {
-            listData.purl = midurlinfo[i].purl
+          if (listData.songid && listData.albumid && midurlJson[listData.songmid]) {
+            listData.purl = midurlJson[listData.songmid].purl
             songList.push(creatSong(listData))
           }
         }

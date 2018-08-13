@@ -1,6 +1,38 @@
 import axios from 'axios'
 import {commonParams, baseUrl} from './config'
+import {jsonp} from './jsonp'
 export function getRecommend() {
+  var url = 'https://u.y.qq.com/cgi-bin/musicu.fcg'
+  var params = {
+    toplist: {
+      module: 'music.web_toplist_svr',
+      method: 'get_toplist_index',
+      param: {}
+    },
+    focus: {
+      module: 'QQMusic.MusichallServer',
+      method: 'GetFocus',
+      param: {}
+    }
+  }
+  var data = Object.assign({}, {
+    callback: 'recom4014678690649598',
+    g_tk: 1714213237,
+    hostUin: 0,
+    format: 'jsonp',
+    inCharset: 'utf8',
+    outCharset: 'utf-8',
+    notice: 0,
+    platform: 'yqq',
+    needNewCode: 0,
+    data: JSON.stringify(params)
+  })
+  return jsonp(url, data, {
+    param: 'callback',
+    prefix: 'recom4014678690649598'
+  })
+}
+export function getRecommend1() {
   const url = baseUrl + '/api/getList'
 
   const data = Object.assign({}, {

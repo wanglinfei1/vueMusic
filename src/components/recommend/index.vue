@@ -6,8 +6,8 @@
           <slider>
             <!--slot-->
             <div v-for="item in recommendList" :key="item.key">
-              <a :href="item.linkUrl">
-                <img :src="item.picUrl" @load="loadImage" class="needsclick">
+              <a :href="getJumpUrl(item)">
+                <img :src="item.pic_info.url" @load="loadImage" class="needsclick">
               </a>
             </div>
           </slider>
@@ -60,6 +60,9 @@
       this._getPlayList()
     },
     methods: {
+      getJumpUrl(item) {
+        return item.type === 10012 ? 'https://y.qq.com/n/yqq/mv/v/' + item.jump_info.url + '.html' : item.type === 10002 ? 'https://y.qq.com/n/yqq/album/' + item.jump_info.url + '.html#stat=y_new.index.focus.click' : item.jump_info.url
+      },
       ...mapMutations({
         setDisc: 'SET_DISC'
       }),
@@ -76,8 +79,9 @@
       },
       _getRecommend () {
         getRecommend().then(res => {
+          console.log(res)
           if (res.code === ERR_OK) {
-            this.recommendList = res.data.slider
+            this.recommendList = res.focus.data.content
           }
         })
       },

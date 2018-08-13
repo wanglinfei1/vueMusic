@@ -144,12 +144,17 @@ apiRouter.get('/CgiGetVkey', function (req, res) {
     console.log(error)
   })
 });
-apiRouter.get('/getSearch', function (req, res) {
+apiRouter.get('/getCommonApi', function (req, res) {
   var url = req.query.url;
+  var header = req.query.header;
+  var urlData = req.query.urlData;
+  if(urlData){
+    url += ('?'+urlData.replace(/\$/g,'&'))
+  }
   axios.get(url, {
     headers: {
-      "origin": "https://m.y.qq.com",
-      "referer": "https://m.y.qq.com/"
+      "origin": header&&header.origin?header.origin:"https://m.qq.com",
+      "referer": header&&header.referer?header.referer:"https://m.qq.com/"
     },
     params: req.query.data
   }).then(response => {

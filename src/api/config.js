@@ -19,5 +19,5 @@ export const options1 = {
 export const ERR_OK = 0
 export const ERR_ERR = 500
 export const hotKeyNum = 16
-
-export const baseUrl = ''
+window.REACTDATA = window.REACTDATA || {}
+export const baseUrl = window.REACTDATA.baseUrl || ''
