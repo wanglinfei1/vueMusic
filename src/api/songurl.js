@@ -2,13 +2,28 @@
  * Created by linfei6 on 2018/4/19.
  */
 import axios from 'axios'
-import {baseUrl} from './config'
+import { baseUrl } from './config'
+
+// var qs = require('qs')
+
+// axios.defaults.headers = {
+//   'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+// }
+
+// axios.interceptors.request.use((config) => {
+//   if (config.method === 'post') {
+//     config.data = qs.stringify(config.data)
+//   }
+//   return config
+// }, (error) => {
+//   return Promise.reject(error)
+// })
 
 export function CgiGetVkey(songmids, songtypes) {
   const url = baseUrl + '/api/CgiGetVkey'
   if (!songmids.length || !songtypes.length) {
     return new Promise((resolve, reject) => {
-      resolve({code: -1})
+      resolve({ code: -1 })
     })
   }
   const data = Object.assign({
@@ -38,7 +53,7 @@ export function CgiGetVkey(songmids, songtypes) {
   return axios({
     method: 'post',
     url: url,
-    data: {data: data}
+    data: { data: data }
   }).then(res => {
     return Promise.resolve(res.data)
   })

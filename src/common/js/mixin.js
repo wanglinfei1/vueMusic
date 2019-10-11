@@ -1,10 +1,58 @@
 /**
  * Created by wanglinfei on 2017/9/8.
  */
-import {mapGetters, mapMutations, mapActions} from 'vuex'
-import {palyMode} from 'common/js/config'
-import {shuffle} from 'common/js/util'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
+import { palyMode } from 'common/js/config'
+import { shuffle } from 'common/js/util'
 import Song from 'common/js/song'
+import { CgiGetVkey } from 'api/songurl'
+import { ERR_OK } from 'api/config'
+import { creatSong } from './song'
+
+export const singerDetailsMixin = {
+  methods: {
+    _CgiGetVkey(ids, types, songer, other) {
+      return new Promise((resolve, reject) => {
+        CgiGetVkey(ids, types).then((res) => {
+          if (res.code === ERR_OK) {
+            var midurlinfo = res.url_mid.data.midurlinfo
+            var midurlJson = {}
+            midurlinfo.forEach((midurlitem) => {
+              if (midurlitem.songmid) {
+                midurlJson[midurlitem.songmid] = midurlitem
+              }
+            })
+            console.log(midurlJson)
+            if (!other) {
+              this._normalizeSongUrl(songer, midurlJson)
+            }
+            resolve(midurlJson)
+          } else {
+            reject()
+          }
+        }).catch(() => {
+          reject()
+        })
+      })
+    },
+    _normalizeSongUrl(songer, midurlJson) {
+      var ret = []
+      songer.forEach((item, i) => {
+        let musicData = item.musicData || item.data || item || {}
+        if (musicData.songid && musicData.albummid && midurlJson[musicData.songmid]) {
+          musicData.purl = midurlJson[musicData.songmid].purl
+          musicData.vkey = midurlJson[musicData.songmid].vkey
+          musicData.filename = midurlJson[musicData.songmid].filename
+          ret.push(creatSong(musicData))
+        } else {
+          ret.push(creatSong(musicData))
+        }
+      })
+      this.songs = [].concat(ret)
+      return this.songs
+    }
+  }
+}
 
 export const playListMixin = {
   computed: {

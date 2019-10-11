@@ -11,9 +11,9 @@
   import MusicList from 'components/music-list/music-list'
   import {mapGetters} from 'vuex'
   import {getSingerDetails} from 'api/singer'
-  import {CgiGetVkey} from 'api/songurl'
   import {creatSong} from 'common/js/song'
   import Singer from 'common/js/singer'
+  import {singerDetailsMixin} from 'common/js/mixin'
   import {ERR_OK} from 'api/config'
   export default {
     data() {
@@ -24,6 +24,7 @@
         bgImage2: ''
       }
     },
+    mixins: [singerDetailsMixin],
     computed: {
       title() {
         return this.singer.name
@@ -73,28 +74,8 @@
             ret.push(creatSong(musicData))
           }
         })
-        CgiGetVkey(ids, types).then((res) => {
-          if (res.code === ERR_OK) {
-            var midurlinfo = res.url_mid.data.midurlinfo
-            var midurlJson = {}
-            midurlinfo.forEach((midurlitem) => {
-              midurlJson[midurlitem.songmid] = midurlitem
-            })
-            this._normalizeSongUrl(songer, midurlJson)
-          }
-        })
+        this._CgiGetVkey(ids, types, songer)
         return ret
-      },
-      _normalizeSongUrl(songer, midurlJson) {
-        var ret = []
-        songer.forEach((item, i) => {
-          let {musicData} = item
-          if (musicData.songid && musicData.albummid && midurlJson[musicData.songmid]) {
-            musicData.purl = midurlJson[musicData.songmid].purl
-            ret.push(creatSong(musicData))
-          }
-        })
-        this.songs = ret
       }
     },
     components: {

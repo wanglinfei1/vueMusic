@@ -8,15 +8,17 @@
   import musicList from 'components/music-list/music-list'
   import {mapGetters} from 'vuex'
   import {getDiscList} from 'api/recommend'
-  import {CgiGetVkey} from 'api/songurl'
+  import {singerDetailsMixin} from 'common/js/mixin'
   import {creatSong} from 'common/js/song'
   import {ERR_OK} from 'api/config'
+
   export default {
     data() {
       return {
         songs: []
       }
     },
+    mixins: [singerDetailsMixin],
     computed: {
       ...mapGetters([
         'disc'
@@ -56,22 +58,8 @@
           types.push(songDisc.type)
           songList.push(creatSong(songDisc))
         }
-        CgiGetVkey(ids, types).then((res) => {
-          if (res.code === ERR_OK) {
-            var midurlinfo = res.url_mid.data.midurlinfo
-            this._normalizeSongUrl(songDiscList, midurlinfo)
-          }
-        })
+        this._CgiGetVkey(ids, types, songDiscList)
         return songList
-      },
-      _normalizeSongUrl(songDiscList, midurlinfo) {
-        let songList = []
-        for (var i = 0; i < songDiscList.length; i++) {
-          var songDisc = songDiscList[i]
-          songDisc.purl = midurlinfo[i].purl
-          songList.push(creatSong(songDisc))
-        }
-        this.songs = songList
       }
     },
     components: {

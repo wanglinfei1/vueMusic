@@ -1,12 +1,12 @@
 /**
  * Created by wanglinfei on 2017/8/10.
  */
-import {getLyric} from 'api/song'
-import {ERR_OK} from 'api/config'
-import {Base64} from 'js-base64'
+import { getLyric } from 'api/song'
+import { ERR_OK } from 'api/config'
+import { Base64 } from 'js-base64'
 
 export default class Song {
-  constructor({id, mid, name, singer, album, duration, image, url}) {
+  constructor({ id, mid, name, singer, album, duration, image, url, vkey, filename }) {
     this.id = id
     this.mid = mid
     this.name = name
@@ -15,6 +15,8 @@ export default class Song {
     this.duration = duration
     this.image = image
     this.url = url
+    this.vkey = vkey
+    this.filename = filename
   }
 
   getLyric() {
@@ -42,7 +44,9 @@ export function creatSong(songs) {
     album: songs.albumname,
     duration: songs.interval,
     image: `https://y.gtimg.cn/music/photo_new/T002R300x300M000${songs.albummid}.jpg?max_age=2592000`,
-    url: songs.purl ? songs.purl : `http://dl.stream.qqmusic.qq.com/${songs.purl}`
+    vkey: songs.vkey,
+    filename: songs.filename,
+    url: songs.purl ? songs.purl : ('') // `http://dl.stream.qqmusic.qq.com/${songs.purl || ''}`
   })
 }
 function filtername(name) {

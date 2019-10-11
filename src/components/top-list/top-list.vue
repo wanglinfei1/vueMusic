@@ -7,9 +7,9 @@
   import MusicList from 'components/music-list/music-list'
   import {mapGetters} from 'vuex'
   import {getTopList} from 'api/topList'
-  import {CgiGetVkey} from 'api/songurl'
   import {ERR_OK} from 'api/config'
   import {creatSong} from 'common/js/song'
+  import {singerDetailsMixin} from 'common/js/mixin'
 
   export default {
     data() {
@@ -18,6 +18,7 @@
         rank: true
       }
     },
+    mixins: [singerDetailsMixin],
     computed: {
       ...mapGetters([
         'topList'
@@ -61,28 +62,8 @@
             songList.push(creatSong(listData))
           }
         }
-        CgiGetVkey(ids, types).then((res) => {
-          if (res.code === ERR_OK) {
-            var midurlinfo = res.url_mid.data.midurlinfo
-            var midurlJson = {}
-            midurlinfo.forEach((midurlitem) => {
-              midurlJson[midurlitem.songmid] = midurlitem
-            })
-            this._normalizeSongUrl(list, midurlJson)
-          }
-        })
+        this._CgiGetVkey(ids, types, list)
         return songList
-      },
-      _normalizeSongUrl(list, midurlJson) {
-        let songList = []
-        for (var i = 0; i < list.length; i++) {
-          var listData = list[i].data
-          if (listData.songid && listData.albumid && midurlJson[listData.songmid]) {
-            listData.purl = midurlJson[listData.songmid].purl
-            songList.push(creatSong(listData))
-          }
-        }
-        this.songs = songList
       }
     },
     components: {

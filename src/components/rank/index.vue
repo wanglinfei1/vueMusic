@@ -3,13 +3,14 @@
     <Scroll class="toplist" ref="topList" :data="topList">
       <ul>
         <li class="item"
-            v-for="item in topList"
+            v-for="(item,index) in topList"
+            :key="index"
             @click="selectItem(item)">
           <div class="icon">
             <img :src="item.picUrl" alt="" width="100" height="100">
           </div>
           <ul class="songlist">
-            <li class="song" v-for="song in item.songList">
+            <li class="song" v-for="(song,index) in item.songList" :key="index+'-1'">
               <span>{{song.singername}}</span>
               <span>{{song.songname}}</span>
             </li>

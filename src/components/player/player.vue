@@ -44,7 +44,7 @@
                 <p ref="lyricLine"
                    class="text"
                    :class="{'current': currentLineNum === index}"
-                   v-for="(line,index) in currentLyric.lines">{{line.txt}}</p>
+                   v-for="(line,index) in currentLyric.lines" :key="index">{{line.txt}}</p>
               </div>
             </div>
           </Scroll>
@@ -426,14 +426,21 @@
         var _this = this
         clearTimeout(this.timer)
         this.timer = setTimeout(function () {
-          _this.$refs.audio.play()
+          var audio = _this.$refs.audio
+          var audioSrc = audio.getAttribute('src')
+          if (audioSrc) {
+            audio.play()
+          } else {
+            console.log('======缺少音频资源======', newSong)
+          }
           _this.getLyric()
         }, 1000)
       },
       play(newplay) {
         setTimeout(() => {
           var audio = this.$refs.audio
-          if (!audio) {
+          var audioSrc = audio.getAttribute('src')
+          if (!audio || !audioSrc) {
             return
           }
           newplay ? audio.play() : audio.pause()

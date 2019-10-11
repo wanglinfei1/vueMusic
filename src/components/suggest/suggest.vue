@@ -30,7 +30,7 @@
 </template>
 <script>
   import {getSearch} from 'api/search'
-  import {CgiGetVkey} from 'api/songurl'
+  import {singerDetailsMixin} from 'common/js/mixin'
   import {ERR_OK} from 'api/config'
   import {creatSong} from 'common/js/song'
   import Scroll from 'base/scroll/scroll'
@@ -53,6 +53,7 @@
         beforeScroll: true
       }
     },
+    mixins: [singerDetailsMixin],
     props: {
       query: {
         type: String,
@@ -162,22 +163,12 @@
             ret.push(creatSong(musicData))
           }
         })
-        this._CgiGetVkey(ids, types, list, _result, ret, data)
-        return ret
-      },
-      _CgiGetVkey(ids, types, list, _result, ret, data) {
-        CgiGetVkey(ids, types).then((res) => {
-          if (res.code === ERR_OK) {
-            var midurlinfo = res.url_mid.data.midurlinfo
-            var midurlJson = {}
-            midurlinfo.forEach((midurlitem) => {
-              midurlJson[midurlitem.songmid] = midurlitem
-            })
-            this._normalizeSongUrl(list, midurlJson, _result, data)
-          } else {
-            this.result = _result.concat(ret)
-          }
+        this._CgiGetVkey(ids, types, list, 'suggest').then((midurlJson) => {
+          this._normalizeSongUrl(list, midurlJson, _result, data)
+        }).catch(() => {
+          this.result = _result.concat(ret)
         })
+        return ret
       },
       _normalizeSongUrl(list, midurlJson, _result, data) {
         var songs = []
@@ -194,17 +185,17 @@
         }
         list.forEach((listData, i) => {
           var mid = listData.mid || listData.ksong.mid
-          if (mid && midurlJson[mid] && midurlJson[mid].purl && listData.album && listData.album.mid) {
-            var musicData = {
-              songid: listData.id || listData.ksong.id,
-              songmid: mid,
-              songname: listData.name,
-              singer: listData.singer,
-              albumname: listData.album.name,
-              interval: listData.interval,
-              albummid: listData.album.mid,
-              purl: midurlJson[mid].purl
-            }
+          var musicData = {
+            songid: listData.id || listData.ksong.id,
+            songmid: mid,
+            songname: listData.name,
+            singer: listData.singer,
+            albumname: listData.album ? listData.album.name : '',
+            interval: listData.interval,
+            albummid: listData.album ? listData.album.mid : '',
+            purl: midurlJson[mid] ? midurlJson[mid].purl || '' : ''
+          }
+          if (mid && listData.album && listData.album.mid) {
             songs.push(creatSong(musicData))
           }
         })
