@@ -193,7 +193,9 @@
             albumname: listData.album ? listData.album.name : '',
             interval: listData.interval,
             albummid: listData.album ? listData.album.mid : '',
-            purl: midurlJson[mid] ? midurlJson[mid].purl || '' : ''
+            purl: midurlJson[mid] ? midurlJson[mid].purl || '' : '',
+            vkey: midurlJson[mid] ? midurlJson[mid].vkey || '' : '',
+            filename: midurlJson[mid] ? midurlJson[mid].filename || '' : ''
           }
           if (mid && listData.album && listData.album.mid) {
             songs.push(creatSong(musicData))

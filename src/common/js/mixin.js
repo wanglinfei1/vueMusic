@@ -11,7 +11,9 @@ import { creatSong } from './song'
 
 export const singerDetailsMixin = {
   methods: {
-    _CgiGetVkey(ids, types, songer, other) {
+    _CgiGetVkey(ids, types, songer, other, index) {
+      index = index || 0
+      index++
       return new Promise((resolve, reject) => {
         CgiGetVkey(ids, types).then((res) => {
           if (res.code === ERR_OK) {
@@ -22,7 +24,11 @@ export const singerDetailsMixin = {
                 midurlJson[midurlitem.songmid] = midurlitem
               }
             })
-            console.log(midurlJson)
+            if (JSON.stringify(midurlJson) === '{}' && index < 5) {
+              this._CgiGetVkey(ids, types, songer, other, index)
+              return false
+            }
+            console.log(midurlJson, index)
             if (!other) {
               this._normalizeSongUrl(songer, midurlJson)
             }
