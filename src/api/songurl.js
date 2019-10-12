@@ -58,3 +58,19 @@ export function CgiGetVkey(songmids, songtypes) {
     return Promise.resolve(res.data)
   })
 }
+
+export function getPuppeteerList(songs) {
+  const url = baseUrl + '/api/puppeteer'
+  const data = Object.assign({}, {
+    url: `https://i.y.qq.com/v8/playsong.html?songmid=${songs.join(',')}`,
+    type: 0,
+    key: 'songlist,adtagMaps,channelIds',
+    select: '.js_song_name',
+    attr: 'html,src,width,url'
+  })
+  return axios.get(url, {
+    params: data
+  }).then(res => {
+    return Promise.resolve(res.data)
+  })
+}

@@ -5,7 +5,7 @@ import { mapGetters, mapMutations, mapActions } from 'vuex'
 import { palyMode } from 'common/js/config'
 import { shuffle } from 'common/js/util'
 import Song from 'common/js/song'
-import { CgiGetVkey } from 'api/songurl'
+import { CgiGetVkey, getPuppeteerList } from 'api/songurl'
 import { ERR_OK } from 'api/config'
 import { creatSong } from './song'
 
@@ -43,19 +43,31 @@ export const singerDetailsMixin = {
     },
     _normalizeSongUrl(songer, midurlJson) {
       var ret = []
+      var noPulSongs = []
       songer.forEach((item, i) => {
         let musicData = item.musicData || item.data || item || {}
         if (musicData.songid && musicData.albummid && midurlJson[musicData.songmid]) {
           musicData.purl = midurlJson[musicData.songmid].purl
           musicData.vkey = midurlJson[musicData.songmid].vkey
           musicData.filename = midurlJson[musicData.songmid].filename
-          ret.push(creatSong(musicData))
-        } else {
-          ret.push(creatSong(musicData))
         }
+        if (!musicData.purl && musicData.songmid) {
+          noPulSongs.push(musicData.songmid)
+        }
+        ret.push(creatSong(musicData))
       })
       this.songs = [].concat(ret)
+      this._getPuppeteerList(noPulSongs, this.songs)
       return this.songs
+    },
+    _getPuppeteerList(noPulSongs, songs) {
+      if (noPulSongs && noPulSongs.length) {
+        getPuppeteerList(noPulSongs).then((res) => {
+          console.log(res)
+        }).catch((err) => {
+          console.log(err)
+        })
+      }
     }
   }
 }
