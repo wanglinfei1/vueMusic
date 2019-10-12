@@ -64,6 +64,11 @@ export const singerDetailsMixin = {
       if (noPulSongs && noPulSongs.length) {
         getPuppeteerList(noPulSongs).then((res) => {
           console.log(res)
+          if (res.code === ERR_OK) {
+            songs.forEach((item, i) => {
+              item = JSON.parse(JSON.stringify(item))
+            })
+          }
         }).catch((err) => {
           console.log(err)
         })
