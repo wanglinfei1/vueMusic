@@ -64,7 +64,7 @@
               <progress-bar :percent="percent" @percentChange="onpercentChange"></progress-bar>
             </div>
             <span class="time time-r">
-              {{format(currentSong.duration)}}
+              {{format(currentSong.duration2 || currentSong.duration)}}
             </span>
           </div>
           <div class="operators">
@@ -161,7 +161,7 @@
         return this.readyState ? '' : 'disable'
       },
       percent() {
-        return this.currentTime / this.currentSong.duration
+        return this.currentTime / (this.currentSong.duration2 || this.currentSong.duration)
       },
       ...mapGetters([
         'fullScreen',
@@ -251,7 +251,7 @@
         this.currentTime = e.target.currentTime
       },
       onpercentChange(percent) {
-        var currentTime = this.currentSong.duration * percent
+        var currentTime = (this.currentSong.duration2 || this.currentSong.duration) * percent
         this.$refs.audio.currentTime = currentTime
         if (!this.play) {
           this.toggerPlaying()

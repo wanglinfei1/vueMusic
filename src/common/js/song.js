@@ -105,7 +105,7 @@ export default class Song {
               kugourl = `http://antiserver.kuwo.cn/anti.s?rid=MUSIC_${id}&response=res&format=mp3&type=convert_url`
             }
             this.url2 = kugourl
-            this.duration = datalist.duration || this.duration
+            // this.duration2 = datalist.duration || this.duration
             resolve({
               url: this.url2,
               from: tagType
