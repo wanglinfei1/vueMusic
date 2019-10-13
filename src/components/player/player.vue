@@ -109,7 +109,7 @@
     </transition>
     <playList ref="playList"></playList>
     <audio
-      :src="currentSong.url"
+      :src="currentSong.url||currentSong.url2"
       ref="audio"
       @timeupdate="updatatime"
       @play="ready"
@@ -187,24 +187,24 @@
       },
       end() {
         if (this.mode === palyMode.loop) {
-          this.loop()
+          this.loop(1)
         } else {
-          this.next()
+          this.next(1)
         }
       },
-      loop() {
+      loop(type) {
         this.$refs.audio.currentTime = 0
         this.$refs.audio.play()
         if (this.currentLyric) {
           this.currentLyric.seek(0)
         }
       },
-      next() {
+      next(type) {
         if (!this.readyState) {
           return
         }
         if (this.playList.length === 1) {
-          this.loop()
+          this.loop(type)
           return
         } else {
           var index = this.currentIndex + 1
@@ -332,13 +332,48 @@
       ...mapActions([
         'savePlayHistory'
       ]),
+      nopurlpause: function (audio, song) {
+        console.log('======缺少音频资源======', song)
+        audio.pause()
+        audio.currentTime = 0
+        if (this.currentLyric) {
+          this.currentLyric.stop()
+          this.currentLineNum = 0
+          this.currentTime = 0
+        }
+      },
+      getPurl: function (song) {
+        var audio = this.$refs.audio
+        if (song.puppeteer) {
+          this.nopurlpause(audio, song)
+          return
+        }
+        this.currentSong.getPurl().then((data) => {
+          var url = data.url || ''
+          var from = data.from || ''
+          console.log(url, from)
+          try {
+            clearTimeout(this.timer3)
+            this.timer3 = setTimeout(() => {
+              audio.play()
+              if (this.currentLyric) {
+                this.currentLyric.play()
+              }
+            }, 300)
+          } catch (err) {
+            console.log(err)
+          }
+        }).catch((res) => {
+          this.nopurlpause(audio, song)
+        })
+      },
       getLyric: function () {
         this.currentSong.getLyric().then((lyric) => {
           if (this.currentSong.lyric !== lyric) {
             return
           }
           this.currentLyric = new Lyric(lyric, this.handleLyric)
-          if (this.play) {
+          if (this.play && (this.currentSong.url || this.currentSong.url2)) {
             this.currentLyric.play()
           }
         }).catch((res) => {
@@ -431,13 +466,14 @@
           if (audioSrc) {
             audio.play()
           } else {
-            console.log('======缺少音频资源======', newSong)
+            _this.getPurl(newSong)
           }
           _this.getLyric()
         }, 1000)
       },
       play(newplay) {
-        setTimeout(() => {
+        clearTimeout(this.timer2)
+        this.timer2 = setTimeout(() => {
           var audio = this.$refs.audio
           var audioSrc = audio.getAttribute('src')
           if (!audio || !audioSrc) {

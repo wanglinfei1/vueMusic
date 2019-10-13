@@ -3,21 +3,7 @@
  */
 import axios from 'axios'
 import { baseUrl } from './config'
-
-// var qs = require('qs')
-
-// axios.defaults.headers = {
-//   'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
-// }
-
-// axios.interceptors.request.use((config) => {
-//   if (config.method === 'post') {
-//     config.data = qs.stringify(config.data)
-//   }
-//   return config
-// }, (error) => {
-//   return Promise.reject(error)
-// })
+import { jsonp } from './jsonp'
 
 export function CgiGetVkey(songmids, songtypes) {
   const url = baseUrl + '/api/CgiGetVkey'
@@ -60,17 +46,57 @@ export function CgiGetVkey(songmids, songtypes) {
 }
 
 export function getPuppeteerList(songs) {
-  const url = baseUrl + '/api/puppeteer'
+  var url = ''
+  var debug = true
+  if (debug) {
+    url = `${baseUrl}/api/puppeteer`
+  } else {
+    url = 'http://dev.wzytop.cn/api/puppeteer'
+  }
+
   const data = Object.assign({}, {
     url: `https://i.y.qq.com/v8/playsong.html?songmid=${songs.join(',')}`,
     type: 0,
-    key: 'songlist,adtagMaps,channelIds',
+    key: 'songlist,adtagMaps',
     select: '.js_song_name',
-    attr: 'html,src,width,url'
+    attr: 'html,src,width,url',
+    fn: `(window, reqQuery) => {
+      console.log(window, reqQuery)
+      return 'test'
+    }`
   })
-  return axios.get(url, {
+  return axios({
+    method: 'get',
+    url: url,
     params: data
   }).then(res => {
     return Promise.resolve(res.data)
+  })
+}
+
+export function getkugosearch(key) {
+  var url1 = `http://search.kuwo.cn/r.s?all=${key}&ft=music&client=kt&cluster=0&pn=0&rn=50&rformat=json&encoding=utf8`
+  var url2 = `http://search.kuwo.cn/r.s?all=${key}&ft=music&newsearch=1&itemset=web_2012&client=kt&cluster=0&pn=0&rn=30&rformat=json&hasmkv=1&encoding=utf8`
+
+  function async(url) {
+    return new Promise((resolve, reject) => {
+      jsonp(url, {}, {
+        param: 'callback',
+        prefix: 'searchMusicResult'
+      }).then((res) => {
+        resolve(res)
+      }).catch((err) => {
+        reject(err)
+      })
+    })
+  }
+  return Promise.all([async(url1), async(url2)])
+}
+
+export function getkuogosearchpc(key) {
+  var url = `http://kuwo.cn/api/www/search/searchMusicBykeyWord?key=${key}&pn=1&rn=2`
+  return jsonp(url, {}, {
+    param: 'callback',
+    prefix: 'searchMusicResult'
   })
 }

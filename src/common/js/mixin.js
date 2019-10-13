@@ -24,7 +24,7 @@ export const singerDetailsMixin = {
                 midurlJson[midurlitem.songmid] = midurlitem
               }
             })
-            if (JSON.stringify(midurlJson) === '{}' && index < 5) {
+            if (JSON.stringify(midurlJson) === '{}' && index < 2) {
               this._CgiGetVkey(ids, types, songer, other, index)
               return false
             }
@@ -46,7 +46,7 @@ export const singerDetailsMixin = {
       var noPulSongs = []
       songer.forEach((item, i) => {
         let musicData = item.musicData || item.data || item || {}
-        if (musicData.songid && musicData.albummid && midurlJson[musicData.songmid]) {
+        if (musicData.songmid && musicData.albummid && midurlJson[musicData.songmid]) {
           musicData.purl = midurlJson[musicData.songmid].purl
           musicData.vkey = midurlJson[musicData.songmid].vkey
           musicData.filename = midurlJson[musicData.songmid].filename
@@ -62,17 +62,38 @@ export const singerDetailsMixin = {
     },
     _getPuppeteerList(noPulSongs, songs) {
       if (noPulSongs && noPulSongs.length) {
-        getPuppeteerList(noPulSongs).then((res) => {
-          console.log(res)
-          if (res.code === ERR_OK) {
-            songs.forEach((item, i) => {
-              item = JSON.parse(JSON.stringify(item))
-            })
-          }
-        }).catch((err) => {
-          console.log(err)
+        this.__getPuppeteerList(noPulSongs, songs).then((ret) => {
+          this.songs = [].concat(ret)
         })
       }
+    },
+    __getPuppeteerList(noPulSongs, songs) {
+      return new Promise((resolve, reject) => {
+        getPuppeteerList(noPulSongs).then((res) => {
+          console.log(res, noPulSongs.length)
+          if (res.code === ERR_OK) {
+            var songlists = res.data.pagedata.songlist || []
+            var midurlJson = {}
+            songlists.forEach((item) => {
+              midurlJson[item.songmid] = item
+            })
+            var ret = []
+            songs.forEach((item, i) => {
+              if (item.mid && !item.url && midurlJson[item.mid]) {
+                if (midurlJson[item.mid].m4aUrl) {
+                  item.url = midurlJson[item.mid].m4aUrl
+                } else {
+                  // item.puppeteer = '1'
+                }
+              }
+              ret.push(item)
+            })
+            resolve(ret)
+          }
+        }).catch((err) => {
+          reject(err)
+        })
+      })
     }
   }
 }

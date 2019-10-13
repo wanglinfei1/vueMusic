@@ -4,8 +4,8 @@ var path = require('path')
 module.exports = {
   build: {
     env: require('./prod.env'),
-    index: path.resolve(__dirname, '../../aws/html/vueMusic/index.html'),
-    assetsRoot: path.resolve(__dirname, '../../aws/html/vueMusic'),
+    index: path.resolve(__dirname, '../../nginxroot/vueMusic/index.html'),
+    assetsRoot: path.resolve(__dirname, '../../nginxroot/vueMusic'),
     assetsSubDirectory: 'static',
     assetsPublicPath: './',
     productionSourceMap: false,
