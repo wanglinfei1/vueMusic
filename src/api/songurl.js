@@ -103,5 +103,7 @@ export function getkuogosearchpc(key) {
     }
   }).then(res => {
     return Promise.resolve(res.data)
+  }).catch((err) => {
+    return Promise.reject(err)
   })
 }

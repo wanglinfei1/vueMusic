@@ -1,16 +1,32 @@
 <template>
-  <div class="singer" ref="singer">
-    <singer-list :data="singer" @select="selectSinger" ref="singerList"></singer-list>
+  <div
+    class="singer"
+    ref="singer"
+  >
+    <singer-list
+      :data="singer"
+      @select="selectSinger"
+      ref="singerList"
+    ></singer-list>
     <router-view></router-view>
   </div>
 </template>
+
 <script>
 import SingerList from 'base/singerList/singerList'
-import { getSigerList } from 'api/singer'
-import { ERR_OK } from 'api/config'
+import {
+  getSigerList
+} from 'api/singer'
+import {
+  ERR_OK
+} from 'api/config'
 import Singer from 'common/js/singer'
-import { mapMutations } from 'vuex'
-import { playListMixin } from 'common/js/mixin'
+import {
+  mapMutations
+} from 'vuex'
+import {
+  playListMixin
+} from 'common/js/mixin'
 const HOT_TITLE = '热门'
 const NUM = 20
 export default {
@@ -75,7 +91,7 @@ export default {
           item.push(map[i])
         }
       }
-      item.sort(function(a, b) {
+      item.sort(function (a, b) {
         return a.title.charCodeAt(0) - b.title.charCodeAt(0)
       })
       return hot.concat(item)
@@ -95,7 +111,8 @@ export default {
   }
 }
 </script>
-<style lang="stylus" rel="stylesheet/stylus">
+
+<style lang="stylus">
 .singer {
   position: fixed;
   top: 88px;
