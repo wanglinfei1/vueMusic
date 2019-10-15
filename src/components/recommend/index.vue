@@ -7,7 +7,7 @@
             <!--slot-->
             <div v-for="item in recommendList" :key="item.key">
               <a :href="getJumpUrl(item)">
-                <img :src="item.pic_info.url" @load="loadImage" class="needsclick">
+                <img :src="item.pic_info.url.replace(/https:\/\/|http:\/\//g, '//')" @load="loadImage" class="needsclick">
               </a>
             </div>
           </slider>
@@ -20,7 +20,7 @@
                 @click="selectItem(item)"
                 :key="item.key">
               <div class="icon">
-                <img :src="item.imgurl" width="60" height="60" alt="">
+                <img :src="item.imgurl.replace(/https:\/\/|http:\/\//g, '//')" width="60" height="60" alt="">
               </div>
               <div class="text">
                 <h2 class="name" v-html="item.creator.name"></h2>

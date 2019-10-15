@@ -70,7 +70,7 @@
     },
     computed: {
       bgStyle() {
-        return `background-image:url(${this.bgImage})`
+        return `background-image:url(${this.bgImage.replace(/https:\/\/|http:\/\//g, '//')})`
       }
     },
     created() {

@@ -52,12 +52,12 @@ export default class Song {
           abslist = abslist1
           tagType = 'mp3'
           id = (abslist1.MUSICRID || '').replace('MUSIC_', '')
-          kugourl = `http://antiserver.kuwo.cn/anti.s?rid=MUSIC_${id}&response=res&format=mp3&type=convert_url`
+          kugourl = `//antiserver.kuwo.cn/anti.s?rid=MUSIC_${id}&response=res&format=mp3&type=convert_url`
         } else if (abslist2.TAG) {
           abslist = abslist2
           tagType = 'mp4'
           id = (abslist2.MUSICRID || '').replace('MUSIC_', '')
-          kugourl = `http://antiserver.kuwo.cn/anti.s?rid=MUSIC_${id}&response=res&format=mp4&type=convert_url`
+          kugourl = `//antiserver.kuwo.cn/anti.s?rid=MUSIC_${id}&response=res&format=mp4&type=convert_url`
         }
         var _url2 = kugourl || abslist.TAG || ''
         if (_url2) {
@@ -100,11 +100,11 @@ export default class Song {
             if (datalist.hasmv === 1) {
               tagType = 'mp4'
               id = datalist.rid || (datalist.musicrid || '').replace('MUSIC_', '')
-              kugourl = `http://antiserver.kuwo.cn/anti.s?rid=MUSIC_${id}&response=res&format=mp4&type=convert_url`
+              kugourl = `//antiserver.kuwo.cn/anti.s?rid=MUSIC_${id}&response=res&format=mp4&type=convert_url`
             } else if (datalist.hasmv === 0) {
               tagType = 'mp3'
               id = datalist.rid || (datalist.musicrid || '').replace('MUSIC_', '')
-              kugourl = `http://antiserver.kuwo.cn/anti.s?rid=MUSIC_${id}&response=res&format=mp3&type=convert_url`
+              kugourl = `//antiserver.kuwo.cn/anti.s?rid=MUSIC_${id}&response=res&format=mp3&type=convert_url`
             }
             this.url2 = kugourl
               // this.duration2 = datalist.duration || this.duration
