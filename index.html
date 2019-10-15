@@ -7,7 +7,9 @@
     <title>vue-music</title>
     <script>
         window.REACTDATA = window.REACTDATA || {}
-        REACTDATA.baseUrl = location.protocol + '//wzytop.cn'
+        var host = location.host
+        REACTDATA.debugger = (host.indexOf('dev') > -1 || host.indexOf('wlf') > -1) ? true : false
+        REACTDATA.baseUrl = location.protocol + '//' + (REACTDATA.debugger ? 'dev.' : '') + 'wzytop.cn'
         REACTDATA.fristreqkugo = true
     </script>
 </head>

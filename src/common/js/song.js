@@ -36,6 +36,7 @@ export default class Song {
       })
     })
   }
+
   // 缺少qq云音乐 应急请求酷狗音乐h5搜索接口
   getkugodata() {
     return new Promise((resolve, reject) => {
@@ -85,6 +86,7 @@ export default class Song {
       })
     })
   }
+
   // 缺少qq云音乐 应急请求酷狗音乐pc搜索接口
   getkuogourlpc() {
     return new Promise((resolve, reject) => {
@@ -97,15 +99,15 @@ export default class Song {
             var id
             if (datalist.hasmv === 1) {
               tagType = 'mp4'
-              id = (datalist.musicrid || '').replace('MUSIC_', '')
+              id = datalist.rid || (datalist.musicrid || '').replace('MUSIC_', '')
               kugourl = `http://antiserver.kuwo.cn/anti.s?rid=MUSIC_${id}&response=res&format=mp4&type=convert_url`
             } else if (datalist.hasmv === 0) {
               tagType = 'mp3'
-              id = (datalist.musicrid || '').replace('MUSIC_', '')
+              id = datalist.rid || (datalist.musicrid || '').replace('MUSIC_', '')
               kugourl = `http://antiserver.kuwo.cn/anti.s?rid=MUSIC_${id}&response=res&format=mp3&type=convert_url`
             }
             this.url2 = kugourl
-            // this.duration2 = datalist.duration || this.duration
+              // this.duration2 = datalist.duration || this.duration
             resolve({
               url: this.url2,
               from: tagType
@@ -131,6 +133,7 @@ export default class Song {
       })
     })
   }
+
   // qq音乐接口请求vkey失败 node无头浏览器抓取页面数据 失败再应急请求酷狗资源搜索接口
   getPurl() {
     if (this.url || this.url2) {

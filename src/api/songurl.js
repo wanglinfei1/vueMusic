@@ -44,15 +44,9 @@ export function CgiGetVkey(songmids, songtypes) {
     return Promise.resolve(res.data)
   })
 }
-var debug = true
 
 export function getPuppeteerList(songs) {
-  var url = ''
-  if (debug) {
-    url = `${baseUrl}/api/puppeteer`
-  } else {
-    url = 'http://dev.wzytop.cn/api/puppeteer'
-  }
+  var url = `${baseUrl}/api/puppeteer`
 
   const data = Object.assign({}, {
     url: `https://i.y.qq.com/v8/playsong.html?songmid=${songs.join(',')}`,
@@ -91,12 +85,7 @@ export function getkugosearch(key) {
 }
 
 export function getkuogosearchpc(key) {
-  var url = ''
-  if (debug) {
-    url = `${baseUrl}/api/getOtherHost`
-  } else {
-    url = 'http://dev.wzytop.cn/api/getOtherHost'
-  }
+  var url = `${baseUrl}/api/getOtherHost`
   return axios({
     method: 'get',
     url: url,
