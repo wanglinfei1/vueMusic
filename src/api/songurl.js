@@ -59,11 +59,8 @@ export function getPuppeteerList(songs) {
     type: 0,
     key: 'songlist,adtagMaps',
     select: '.js_song_name',
-    attr: 'html,src,width,url',
-    fn: `(window, reqQuery) => {
-      console.log(window, reqQuery)
-      return 'test'
-    }`
+    attr: 'html',
+    fn: `function(window,reqQuery){return'函数回调结果测试'}`
   })
   return axios({
     method: 'get',
