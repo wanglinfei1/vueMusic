@@ -8,7 +8,7 @@ import { getPuppeteerList, getkugosearch, getkuogosearchpc } from 'api/songurl'
 var defaultM4aUrl = ''
 
 export default class Song {
-  constructor({ id, mid, name, singer, album, duration, image, url, vkey, filename }) {
+  constructor({ id, mid, name, singer, album, duration, image, image2, url, vkey, filename }) {
     this.id = id
     this.mid = mid
     this.name = name
@@ -16,6 +16,7 @@ export default class Song {
     this.album = album
     this.duration = duration
     this.image = image
+    this.image2 = image2
     this.url = url
     this.vkey = vkey
     this.filename = filename
@@ -107,7 +108,7 @@ export default class Song {
               kugourl = `//antiserver.kuwo.cn/anti.s?rid=MUSIC_${id}&response=res&format=mp3&type=convert_url`
             }
             this.url2 = kugourl
-              // this.duration2 = datalist.duration || this.duration
+            // this.duration2 = datalist.duration || this.duration
             resolve({
               url: this.url2,
               from: tagType
@@ -186,6 +187,7 @@ export function creatSong(songs) {
     album: songs.albumname,
     duration: songs.interval,
     image: `https://y.gtimg.cn/music/photo_new/T002R300x300M000${songs.albummid}.jpg?max_age=2592000`,
+    image2: `https://y.gtimg.cn/music/photo_new/T002R500x500M000${songs.albummid}.jpg?max_age=2592000`,
     vkey: songs.vkey,
     filename: songs.filename,
     url: songs.purl ? songs.purl : ('') // `http://dl.stream.qqmusic.qq.com/${songs.purl || ''}`

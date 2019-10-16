@@ -40,6 +40,7 @@ export function CgiGetVkey(songmids, songtypes) {
     method: 'post',
     url: url,
     data: { data: data }
+    // params: { data: data }
   }).then(res => {
     return Promise.resolve(res.data)
   })
@@ -91,15 +92,15 @@ export function getkuogosearchpc(key) {
     url: url,
     params: {
       url: 'http://kuwo.cn/api/www/search/searchMusicBykeyWord',
-      params: JSON.stringify({
+      params: {
         key: key,
         pn: 1,
         rn: 2
-      }),
-      headers: JSON.stringify({
+      },
+      headers: {
         'origin': 'http://kuwo.cn',
         'referer': 'http://kuwo.cn'
-      })
+      }
     }
   }).then(res => {
     return Promise.resolve(res.data)
