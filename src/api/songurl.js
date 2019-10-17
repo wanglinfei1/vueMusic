@@ -4,6 +4,7 @@
 import axios from 'axios'
 import { baseUrl } from './config'
 import { jsonp } from './jsonp'
+axios.defaults.withCredentials = true
 
 export function CgiGetVkey(songmids, songtypes) {
   const url = baseUrl + '/api/CgiGetVkey'

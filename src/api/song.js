@@ -1,5 +1,6 @@
 import axios from 'axios'
 import {commonParams, baseUrl} from './config'
+axios.defaults.withCredentials = true
 
 export function getLyric(songmid) {
   const url = baseUrl + '/api/getLyric'

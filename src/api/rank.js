@@ -3,6 +3,7 @@
  */
 import axios from 'axios'
 import {commonParams, baseUrl} from './config'
+axios.defaults.withCredentials = true
 
 export function getRankList() {
   const url = baseUrl + '/api/getRankList'
