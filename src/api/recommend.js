@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { commonParams, baseUrl } from './config'
 import { jsonp } from './jsonp'
+axios.defaults.withCredentials = true
 export function getRecommend() {
   var url = 'https://u.y.qq.com/cgi-bin/musicu.fcg'
   var params = {

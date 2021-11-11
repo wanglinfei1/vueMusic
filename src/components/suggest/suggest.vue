@@ -99,7 +99,7 @@ export default {
             this.result = this.result.concat(
               this._getResult(res.data, this.result)
             )
-            console.log(this.result)
+            // console.log(this.result)
             this._checkMore(res.data)
           }
         }

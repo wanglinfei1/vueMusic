@@ -11,7 +11,7 @@
       <div class="normal-player" v-show="fullScreen">
         <!--背景 模糊-->
         <div class="background">
-          <img alt="" width="100%" height="100%" :src="currentSong.image">
+          <img alt="" width="100%" height="100%" :src="currentSong.image.replace(/https:\/\/|http:\/\//g, '//')">
         </div>
         <!--顶部-->
         <div class="top">
@@ -29,7 +29,7 @@
           <div class="middle-l" ref="middleL">
             <div class="cd-wrapper" ref="cdWrapper">
               <div class="cd" :class="cdClass">
-                <img alt="" class="image" :src="currentSong.image">
+                <img alt="" class="image" :src="currentSong.image.replace(/https:\/\/|http:\/\//g, '//')">
               </div>
             </div>
             <div class="playing-lyric-wrapper">
@@ -92,7 +92,7 @@
     <transition name="mini">
       <div class="mini-player" v-show="!fullScreen" @click="openPlayer">
         <div class="icon">
-          <img alt="" width="40" height="40" :src="currentSong.image" :class="cdClass">
+          <img alt="" width="40" height="40" :src="currentSong.image.replace(/https:\/\/|http:\/\//g, '//')" :class="cdClass">
         </div>
         <div class="text">
           <h2 class="name" v-html="currentSong.name"></h2>
