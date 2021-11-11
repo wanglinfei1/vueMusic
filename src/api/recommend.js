@@ -1,6 +1,6 @@
 import axios from 'axios'
-import {commonParams, baseUrl} from './config'
-import {jsonp} from './jsonp'
+import { commonParams, baseUrl } from './config'
+import { jsonp } from './jsonp'
 export function getRecommend() {
   var url = 'https://u.y.qq.com/cgi-bin/musicu.fcg'
   var params = {
@@ -29,7 +29,7 @@ export function getRecommend() {
   })
   return jsonp(url, data, {
     param: 'callback',
-    prefix: 'recom4014678690649598'
+    name: 'recom4014678690649598'
   })
 }
 export function getRecommend1() {

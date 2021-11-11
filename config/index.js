@@ -4,10 +4,10 @@ var path = require('path')
 module.exports = {
   build: {
     env: require('./prod.env'),
-    index: path.resolve(__dirname, '../../nginxroot/vueMusic/index.html'),
-    assetsRoot: path.resolve(__dirname, '../../nginxroot/vueMusic'),
+    index: path.resolve(__dirname, '../dist/music.html'),
+    assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: './',
+    assetsPublicPath: '//n.sinaimg.cn/sports/b5eb0bc4/20211111/',
     productionSourceMap: false,
     // Gzip off by default as many popular static hosts such as
     // Surge or Netlify already gzip all static common for you.

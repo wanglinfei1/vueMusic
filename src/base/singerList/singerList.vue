@@ -31,6 +31,7 @@
             :data-index="index"
             @touchstart="onShortcutTouchStart"
             @touchmove.stop.prevent="onShortcutTouchMove"
+            :key="index"
         >
           {{item}}
         </li>

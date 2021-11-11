@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title>vue-music</title>
     <script>
-        window.REACTDATA = window.REACTDATA || {}
+        var REACTDATA = window.REACTDATA = window.REACTDATA || {}
         var host = location.host
-        REACTDATA.debugger = (host.indexOf('dev') > -1 || host.indexOf('wlf') > -1) ? true : false
+        REACTDATA.debugger = (host.indexOf('dev') > -1 || host.indexOf('wlf') > -1) ? !!1 : false
         REACTDATA.baseUrl = location.protocol + '//' + (REACTDATA.debugger ? 'dev.' : '') + 'wzytop.cn'
         REACTDATA.fristreqkugo = true
     </script>
